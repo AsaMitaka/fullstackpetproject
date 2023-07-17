@@ -1,0 +1,22 @@
+.wrapper {
+  margin: 30px auto 0;
+  padding: 10px;
+  max-width: 1250px;
+  height: 800px;
+  background-color: white;
+  border-radius: 15px;
+
+  display: flex;
+  flex-direction: column;
+
+  .main {
+    flex: 1;
+    padding: 2px 5px;
+    display: flex;
+    flex-direction: column;
+
+    &__title {
+      align-self: center;
+    }
+  }
+}

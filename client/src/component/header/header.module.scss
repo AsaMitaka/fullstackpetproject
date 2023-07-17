@@ -1,0 +1,19 @@
+.header {
+  padding: 10px 15px;
+
+  &__list {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  &__link {
+    font-size: 24px;
+    text-decoration: none;
+    color: black;
+
+    &:hover {
+      color: grey;
+    }
+  }
+}
