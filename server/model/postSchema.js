@@ -1,6 +1,10 @@
 const { Schema, model } = require('mongoose');
 
-const TaskSchema = Schema({
+const PostSchema = Schema({
+  title: {
+    type: String,
+    required: true,
+  },
   text: {
     type: String,
     required: true,
@@ -10,10 +14,14 @@ const TaskSchema = Schema({
     ref: 'User',
     required: true,
   },
+  viewsCount: {
+    type: Number,
+    default: 0,
+  },
   date: {
     type: Date,
     default: Date.now,
   },
 });
 
-module.exports = model('Task', TaskSchema);
+module.exports = model('Post', PostSchema);

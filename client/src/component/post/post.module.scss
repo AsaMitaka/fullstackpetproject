@@ -1,0 +1,64 @@
+.post {
+  margin-bottom: 15px;
+  width: 600px;
+  padding: 10px 20px;
+  border: 1px solid black;
+  border-radius: 10px;
+
+  &__header {
+    margin-bottom: 7px;
+
+    .info {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+
+      .link {
+        text-decoration: none;
+        color: black;
+        display: flex;
+        align-items: center;
+        margin-right: 20px;
+
+        .userimg {
+          width: 10px;
+          height: 10px;
+          margin-right: 7px;
+          border: 1px solid black;
+        }
+
+        .username {
+          font-size: 16px;
+          &:hover {
+            color: gray;
+          }
+        }
+      }
+
+      .time {
+        font-size: 16px;
+        color: gray;
+      }
+    }
+
+    .title {
+      color: black;
+      font-size: 24px;
+      font-weight: bold;
+      text-decoration: none;
+
+      &:hover {
+        color: gray;
+      }
+    }
+  }
+
+  &__block {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  &__info {
+    font-size: 12px;
+  }
+}

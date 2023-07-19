@@ -1,18 +1,18 @@
-const User = require('../model/userSchema');
 const jwt = require('jsonwebtoken');
 
 const auth = async (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(403).json({ message: 'you dont have permission' });
+  }
+
+  const token = authHeader.split(' ')[1];
+
   try {
-    const token = req.headers.authorization?.split(' ')[1];
     const decoded = jwt.verify(token, process.env.JWTSECRET);
 
-    const user = await User.findOne(decoded.id);
-
-    if (!user) {
-      return res.status(403).json({ message: 'Invalid token' });
-    }
-
-    req.user = user;
+    req.userId = decoded.id;
     next();
   } catch (error) {
     return res.status(401).json({ message: 'Is not authorized' });

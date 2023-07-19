@@ -5,13 +5,16 @@ import { useState } from 'react';
 
 const Layout = () => {
   const [isActive, setActive] = useState(false);
+  const handleClose = () => {
+    setActive(false);
+  };
 
   return (
     <div className={styles.wrapper}>
       <Header setActive={setActive} />
       <section className={styles.main}>
         <Outlet />
-        {isActive && <CreatePost onClose={() => setActive(false)} />}
+        {isActive && <CreatePost onClose={handleClose} />}
       </section>
       <Footer />
     </div>

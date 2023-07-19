@@ -14,10 +14,10 @@ const UserSchema = Schema({
     type: String,
     required: true,
   },
-  tasks: [
+  posts: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'Task',
+      ref: 'Post',
     },
   ],
 });

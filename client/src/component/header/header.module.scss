@@ -16,4 +16,21 @@
       color: grey;
     }
   }
+
+  .left {
+    display: flex;
+    align-items: center;
+  }
+
+  &__btn {
+    margin-left: 30px;
+    padding: 5px 20px;
+    background-color: white;
+    cursor: pointer;
+
+    &:hover {
+      color: white;
+      background-color: black;
+    }
+  }
 }

@@ -1,12 +1,13 @@
 const express = require('express');
-const { all, add, remove, edit, userProfile } = require('../controllers/task');
+const { all, getOne, create, remove, edit, userProfile } = require('../controllers/post');
 const auth = require('../middleware/auth');
 const router = express.Router();
 
 router.get('/', auth, all);
-router.post('/add', auth, add);
+router.get('/:id', auth, getOne);
+router.post('/create', auth, create);
 router.delete('/remove/:id', auth, remove);
-router.put('/edit/:id', auth, edit);
+router.patch('/edit/:id', auth, edit);
 router.get('/user/:id', auth, userProfile);
 
 module.exports = router;

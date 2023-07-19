@@ -5,7 +5,7 @@ require('dotenv').config();
 
 const PORT = process.env.PORT;
 const userRouter = require('./routes/user');
-const taskRouter = require('./routes/task');
+const postRouter = require('./routes/post');
 
 const app = express();
 const connect = () => {
@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use('/api/user', userRouter);
-app.use('/api/task', taskRouter);
+app.use('/api/post', postRouter);
 
 app.listen(PORT, () => {
   connect();

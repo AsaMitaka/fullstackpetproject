@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../model/userSchema');
 
@@ -21,7 +21,9 @@ const login = async (req, res) => {
     }
 
     const token = jwt.sign({ id: user.id }, process.env.JWTSECRET, { expiresIn: '30d' });
-    return res.status.json({ id: user.id, username, email: user.email, token });
+    const { password: passwordHash, ...otherData } = user._doc;
+
+    return res.status(200).json({ ...otherData, token });
   } catch (error) {
     console.log(error);
   }
@@ -44,14 +46,24 @@ const signup = async (req, res) => {
 
     const user = await User.create({ email, username, password: hashedPassword });
     const token = jwt.sign({ id: user.id }, process.env.JWTSECRET, { expiresIn: '30d' });
-    return res.status(200).json({ id: user.id, email: user.email, username, token });
+    const { password: passwordHash, ...otherData } = user._doc;
+
+    return res.status(200).json({ ...otherData, token });
   } catch (error) {
     console.log(error);
   }
 };
 
 const current = async (req, res) => {
-  return res.status(200).json(req.user);
+  const user = await User.findById(req.userId);
+
+  if (!user) {
+    res.status(404).json({ message: 'User not found' });
+  }
+
+  const { password, ...otherData } = user._doc;
+
+  return res.status(200).json({ ...otherData });
 };
 
 module.exports = { login, signup, current };

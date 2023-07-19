@@ -4,26 +4,29 @@ import styles from './createpost.module.scss';
 const CreatePost = ({ onClose }) => {
   const ref = useRef();
 
-  // useEffect(() => {
-  //   const handleClickOutside = (event) => {
-  //     if (ref.current && !ref.current.contains(event.target) && event.target !== document) {
-  //       onClose();
-  //     }
-  //   };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (ref.current && !ref.current.contains(event.target) && event.target !== document) {
+        onClose();
+      }
+    };
 
-  //   document.addEventListener('click', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
 
-  //   return () => {
-  //     document.removeEventListener('click', handleClickOutside);
-  //   };
-  // }, [onClose]);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [onClose]);
 
   return (
     <div className={styles.modal}>
       <form>
         <div ref={ref} className={styles.modal__dialog}>
-          <div onClick={onClose}>x</div>
-          <textarea className={styles.textarea}></textarea>
+          <button onClick={onClose} className={styles.close__btn}>
+            x
+          </button>
+          <input type="text" name="title" placeholder="title" className={styles.title} />
+          <textarea className={styles.textarea} placeholder="text" />
           <input type="submit" value="create post" className={styles.btn} />
         </div>
       </form>
