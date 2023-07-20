@@ -3,7 +3,7 @@ import styles from './header.module.scss';
 
 const Header = ({ setActive }) => {
   const { pathname } = useLocation();
-  console.log(pathname);
+
   return (
     <header className={styles.header}>
       <ul className={styles.header__list}>

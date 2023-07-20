@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import styles from './post.module.scss';
 
-const Post = () => {
+const Post = ({ item }) => {
   return (
     <div className={styles.post}>
       <div className={styles.post__header}>

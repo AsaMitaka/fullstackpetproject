@@ -1,23 +1,61 @@
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import styles from './login.module.scss';
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchLogin, selectIsAuth } from '../../redux/slices/authSlice';
 
 const Login = () => {
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isValid },
+  } = useForm({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+    mode: 'onChange',
+  });
+  const dispatch = useDispatch();
+  const isAuth = useSelector(selectIsAuth);
+
+  const onHandleSubmit = async (values) => {
+    const data = await dispatch(fetchLogin(values));
+
+    if (!data.payload) {
+      console.log('error');
+    }
+
+    if (data.payload.token) {
+      window.localStorage.setItem('token', data.payload.token);
+    }
+  };
+
+  if (isAuth) {
+    return <Navigate to="/" />;
+  }
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.login}>
         <h2 className={styles.login__title}>Login</h2>
-        <form>
-          <label htmlFor="username" className={styles.login__label}>
-            Username:
-            <input type="text" name="username" className={styles.login__input} />
-          </label>
-          <label htmlFor="email" className={styles.login__label}>
+        <form onSubmit={handleSubmit(onHandleSubmit)}>
+          <label
+            htmlFor="email"
+            className={styles.login__label}
+            {...register('email', { required: 'Write email' })}>
             Email:
-            <input type="email" name="email" className={styles.login__input} />
+            <input type="email" id="email" name="email" className={styles.login__input} />
+            <span className={styles.error}>{errors.email?.message}</span>
           </label>
-          <label htmlFor="password" className={styles.login__label}>
+          <label
+            htmlFor="password"
+            className={styles.login__label}
+            {...register('password', { required: 'Write password' })}>
             Password:
-            <input type="password" name="password" className={styles.login__input} />
+            <input type="password" id="password" name="password" className={styles.login__input} />
+            <span className={styles.error}>{errors.password?.message}</span>
           </label>
           <input type="submit" value="Submit" className={styles.login__btn} />
         </form>

@@ -30,10 +30,25 @@
     }
 
     .edit {
-      align-self: flex-start;
+      margin-right: 20px;
       padding: 5px 15px;
       color: white;
       background-color: greenyellow;
+      font-weight: bold;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: black;
+      }
+    }
+
+    .logout {
+      padding: 5px 15px;
+      color: white;
+      background-color: red;
+      font-weight: bold;
       border: 1px solid transparent;
       border-radius: 10px;
       cursor: pointer;
