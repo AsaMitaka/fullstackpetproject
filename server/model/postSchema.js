@@ -9,7 +9,7 @@ const PostSchema = Schema({
     type: String,
     required: true,
   },
-  authorID: {
+  userId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true,

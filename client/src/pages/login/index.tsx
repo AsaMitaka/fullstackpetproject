@@ -1,8 +1,9 @@
-import { Link, Navigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './login.module.scss';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchLogin, selectIsAuth } from '../../redux/slices/authSlice';
+import { useEffect } from 'react';
 
 const Login = () => {
   const {
@@ -17,6 +18,7 @@ const Login = () => {
     },
     mode: 'onChange',
   });
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const isAuth = useSelector(selectIsAuth);
 
@@ -32,10 +34,13 @@ const Login = () => {
     }
   };
 
-  if (isAuth) {
-    return <Navigate to="/" />;
-  }
+  console.log(isAuth);
 
+  useEffect(() => {
+    if (isAuth) {
+      navigate('/', { replace: true });
+    }
+  }, [isAuth]);
   return (
     <div className={styles.wrapper}>
       <div className={styles.login}>

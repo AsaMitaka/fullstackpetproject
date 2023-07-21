@@ -1,9 +1,20 @@
 const Post = require('../model/postSchema');
 const User = require('../model/userSchema');
 
+const myAll = async (req, res) => {
+  try {
+    const posts = await Post.find({ userId: req.userId }).populate('userId').exec();
+
+    return res.status(200).json(posts);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const all = async (req, res) => {
   try {
-    const posts = await Post.find().populate('username').exec();
+    const posts = await Post.find();
+    console.log(posts);
 
     return res.status(200).json(posts);
   } catch (error) {
@@ -48,7 +59,7 @@ const create = async (req, res) => {
     const data = {
       title: req.body.title,
       text: req.body.text,
-      authorID: req.userId,
+      userId: req.userId,
     };
     const post = await Post.create(data);
 
@@ -87,7 +98,7 @@ const edit = async (req, res) => {
       {
         title: req.body.title,
         text: req.body.text,
-        user: req.userID,
+        user: req.userId,
       },
       { new: true },
     );
@@ -116,6 +127,7 @@ const userProfile = async (req, res) => {
 };
 
 module.exports = {
+  myAll,
   all,
   getOne,
   create,

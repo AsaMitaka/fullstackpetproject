@@ -1,12 +1,25 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Post } from '../../component';
+import { useNavigate } from 'react-router-dom';
 import styles from './profile.module.scss';
 import { logoutUser } from '../../redux/slices/authSlice';
+import { fetchMyPost } from '../../redux/slices/postSlice';
+import { useEffect } from 'react';
 
 const Profile = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const posts = useSelector((state) => state.post.posts);
+  const user = useSelector((state) => state.auth.user);
+
+  useEffect(() => {
+    dispatch(fetchMyPost(user._id));
+  }, []);
+
   const handleLogout = () => {
     dispatch(logoutUser());
+    window.localStorage.removeItem('token');
+    navigate('/login');
   };
 
   return (
@@ -28,11 +41,9 @@ const Profile = () => {
         </div>
       </div>
       <div className={styles.profile__posts}>
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
+        {posts.length > 0
+          ? posts.map((post, index) => <Post key={index} />)
+          : 'U dont have any posts'}
       </div>
     </div>
   );
