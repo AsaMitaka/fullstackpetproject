@@ -1,10 +1,11 @@
 const express = require('express');
-const { login, signup, current } = require('../controllers/user');
-const auth = require('../middleware/auth');
 const router = express.Router();
+
+const { login, signup, me } = require('../controllers/user');
+const checkAuth = require('../middleware/checkAuth');
 
 router.post('/login', login);
 router.post('/signup', signup);
-router.get('/current', auth, current);
+router.get('/me', checkAuth, me);
 
 module.exports = router;

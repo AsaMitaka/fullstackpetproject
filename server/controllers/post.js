@@ -1,137 +1,112 @@
-const Post = require('../model/postSchema');
-const User = require('../model/userSchema');
+const Post = require('../models/PostModel');
+const User = require('../models/UserModel');
 
-const myAll = async (req, res) => {
-  try {
-    const posts = await Post.find({ userId: req.userId }).populate('userId').exec();
-
-    return res.status(200).json(posts);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const all = async (req, res) => {
-  try {
-    const posts = await Post.find();
-    console.log(posts);
-
-    return res.status(200).json(posts);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const getOne = async (req, res) => {
-  try {
-    const postId = req.params.id;
-    const post = await Post.findOneAndUpdate(
-      {
-        _id: postId,
-      },
-      {
-        $inc: { viewsCount: 1 },
-      },
-      {
-        returnDocument: 'after',
-      },
-      (err, doc) => {
-        if (err) {
-          return res.status(500).json({
-            message: 'Failed to get post',
-          });
-        }
-
-        if (!doc) {
-          return res.status(404).json({ message: 'Post not found' });
-        }
-
-        res.json(doc);
-      },
-    );
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const create = async (req, res) => {
-  try {
-    const data = {
-      title: req.body.title,
-      text: req.body.text,
-      userId: req.userId,
-    };
-    const post = await Post.create(data);
-
-    const user = await User.findByIdAndUpdate(
-      req.userId,
-      { $push: { posts: post._id } },
-      { new: true },
-    );
-
-    return res.status(200).json({ message: 'Post created successfully' });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const remove = async (req, res) => {
+const getOnePost = async (req, res) => {
   const { id } = req.params;
   try {
-    const removed = await Post.findByIdAndRemove(id);
-    const user = await User.findByIdAndUpdate(req.userId, { $pull: { posts: id } }, { new: true });
-    if (!removed) {
-      return res.status(404).json({ message: 'Post is not removed' });
+    const post = await Post.findOne(id);
+
+    return res.status(200).json(post);
+  } catch (err) {
+    console.warn(err);
+    return res.status(404).json({ message: 'Error getting post' });
+  }
+};
+
+const getAllPosts = async (req, res) => {
+  try {
+    const posts = await Post.findAll();
+
+    return res.status(200).json(posts);
+  } catch (err) {
+    console.warn(err);
+    return res.status(404).json({ message: 'Error getting all posts' });
+  }
+};
+
+const getAllUserPosts = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const posts = await Post.find({ userId: id });
+
+    res.status(200).json(posts);
+  } catch (err) {
+    console.warn(err);
+    return res.status(404).json({ message: 'Error getting all user posts' });
+  }
+};
+
+const createPost = async (req, res) => {
+  try {
+    const { title, text } = req.body;
+
+    if (title.length < 1 || title.length > 30) {
+      return res.status(403).json({ message: 'Title less than 1 or more than 30' });
     }
 
-    return res.status(204).json({ message: 'Post removed successfully' });
-  } catch (error) {
-    console.log(error);
+    if (text.length < 5 || text.length > 300) {
+      return res.status(403).json({ message: 'Text length less than 5 or more than 300' });
+    }
+
+    const post = await Post.create({
+      title,
+      text,
+      userId: req.userId,
+    });
+
+    const user = await User.findById(req.userId);
+    user.post.push(post._id);
+    await user.save();
+
+    res.status(200).json({ message: 'Post created successfully' });
+  } catch (err) {
+    console.warn(err);
+    return res.status(404).json({ message: 'Error creating post' });
   }
 };
 
-const edit = async (req, res) => {
+const updatePost = async (req, res) => {
   const { id } = req.params;
   try {
-    const post = await Post.findOneAndUpdate(
-      { _id: id },
-      {
-        title: req.body.title,
-        text: req.body.text,
-        user: req.userId,
-      },
-      { new: true },
-    );
+    const { title, text } = req.body;
+    const post = await Post.findOneAndUpdate(id, { title, text }, { new: true });
+
     if (!post) {
       return res.status(404).json({ message: 'Post not found' });
     }
 
-    return res.status(200).json({ message: 'Post updated successfully', Post: Post });
-  } catch (error) {
-    console.log(error);
+    res.status(200).json(post);
+  } catch (err) {
+    console.warn(err);
+    return res.status(404).json({ message: 'Error updating post' });
   }
 };
 
-const userProfile = async (req, res) => {
+const deletePost = async (req, res) => {
   const { id } = req.params;
   try {
-    const user = await User.findOne({ _id: id });
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+    const post = await Post.findByIdAndRemove(id);
+
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
     }
 
-    return res.status(200).json(user);
-  } catch (error) {
-    console.log(error);
+    const user = await User.findById(req.userId);
+    user.post.pull(id);
+    await user.save();
+
+    return res.status(200).json({ message: 'Post deleted successfully' });
+  } catch (err) {
+    console.warn(err);
+    return res.status(404).json({ message: 'Error deleting post' });
   }
 };
 
 module.exports = {
-  myAll,
-  all,
-  getOne,
-  create,
-  remove,
-  edit,
-  userProfile,
+  getAllPosts,
+  getAllUserPosts,
+  getOnePost,
+  createPost,
+  updatePost,
+  deletePost,
 };
