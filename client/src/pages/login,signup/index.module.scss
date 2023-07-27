@@ -1,0 +1,54 @@
+.wrapper {
+  margin: 0 auto;
+  width: 1050px;
+  min-height: 100vh;
+  padding: 15px 20px;
+
+  .innerwrapper {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 500px;
+    height: 90vh;
+
+    .container {
+      display: flex;
+      flex-direction: column;
+
+      .label {
+        margin: 7px 0 5px;
+        font-size: 20px;
+      }
+
+      .input {
+        width: 450px;
+        padding: 5px 10px;
+        border-radius: 5px;
+      }
+
+      .btn {
+        align-self: center;
+        margin-top: 10px;
+        padding: 5px 20px;
+        font-size: 20px;
+        letter-spacing: 3px;
+        cursor: pointer;
+      }
+    }
+
+    .block {
+      margin-top: 20px;
+
+      .spanbtn {
+        margin-left: 20px;
+        cursor: pointer;
+
+        &:hover {
+          color: red;
+        }
+      }
+    }
+  }
+}

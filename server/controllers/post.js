@@ -4,7 +4,21 @@ const User = require('../models/UserModel');
 const getOnePost = async (req, res) => {
   const { id } = req.params;
   try {
-    const post = await Post.findOne(id);
+    const post = await Post.findOneAndUpdate(
+      {
+        _id: id,
+      },
+      {
+        $inc: { views: 1 },
+      },
+      {
+        returnDocument: 'after',
+      },
+    );
+
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
 
     return res.status(200).json(post);
   } catch (err) {
@@ -15,7 +29,7 @@ const getOnePost = async (req, res) => {
 
 const getAllPosts = async (req, res) => {
   try {
-    const posts = await Post.findAll();
+    const posts = await Post.find();
 
     return res.status(200).json(posts);
   } catch (err) {
