@@ -1,0 +1,41 @@
+.createpost {
+  flex: 1;
+  padding: 5px 10px;
+  display: flex;
+  flex-direction: column;
+
+  &Block {
+    align-self: center;
+    margin-top: 20px;
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+
+    .title {
+      padding: 5px 20px;
+      font-size: 18px;
+    }
+
+    .textarea {
+      margin-top: 10px;
+      padding: 5px 10px;
+      font-size: 18px;
+      height: 200px;
+      resize: none;
+    }
+
+    .submitbtn {
+      align-self: center;
+      margin-top: 10px;
+      padding: 5px 10px;
+      font-size: 20px;
+      font-weight: 450;
+      cursor: pointer;
+
+      &:hover {
+        color: black;
+        background-color: white;
+      }
+    }
+  }
+}

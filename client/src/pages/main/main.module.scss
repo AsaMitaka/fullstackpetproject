@@ -1,0 +1,10 @@
+.main {
+  flex: 1;
+  padding: 10px 15px;
+
+  &Block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}

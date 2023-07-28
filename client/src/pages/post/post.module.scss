@@ -1,0 +1,53 @@
+.post {
+  padding: 5px 15px;
+  display: flex;
+  display: flex;
+  flex-direction: column;
+
+  &Header {
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    background-color: white;
+
+    &Link {
+      display: flex;
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+
+      &Img {
+        width: 20px;
+        height: 20px;
+        margin-right: 20px;
+        border: 1px solid black;
+      }
+
+      &Username {
+        font-size: 18px;
+      }
+    }
+  }
+
+  &Block {
+    padding: 5px 10px;
+    min-height: 350px;
+    color: black;
+    background-color: white;
+
+    &Title {
+      font-size: 20px;
+    }
+
+    &Views {
+      color: grey;
+    }
+
+    &Text {
+      width: 700px;
+      margin-top: 10px;
+      font-size: 16px;
+      word-wrap: break-word;
+      hyphens: auto;
+    }
+  }
+}

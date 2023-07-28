@@ -29,7 +29,7 @@ const getOnePost = async (req, res) => {
 
 const getAllPosts = async (req, res) => {
   try {
-    const posts = await Post.find();
+    const posts = await Post.findAll();
 
     return res.status(200).json(posts);
   } catch (err) {
