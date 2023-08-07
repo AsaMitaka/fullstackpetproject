@@ -1,16 +1,11 @@
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styles from './index.module.scss';
-import { useDispatch, useSelector } from 'react-redux';
-import { useState, useEffect } from 'react';
-import { fetchSignup } from '../../redux/slices/authSlice';
+import { useState } from 'react';
 
 const Signup = () => {
-  const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const isAuth = useSelector((state) => state.auth.user);
-  console.log(isAuth, isAuth?.token);
 
   const handleUsername = (e) => {
     const username = e.target.value;
@@ -36,19 +31,7 @@ const Signup = () => {
     if (!email || !password || !username) {
       return;
     }
-
-    dispatch(fetchSignup({ email: email, password: password, username: username }));
   };
-
-  useEffect(() => {
-    if (isAuth?.token) {
-      window.localStorage.setItem('token', isAuth.token);
-    }
-  }, [isAuth]);
-
-  if (isAuth) {
-    return <Navigate to="/" />;
-  }
 
   return (
     <div className={styles.wrapper}>

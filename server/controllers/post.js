@@ -14,7 +14,7 @@ const getOnePost = async (req, res) => {
       {
         returnDocument: 'after',
       },
-    );
+    ).populate('userId');
 
     if (!post) {
       return res.status(404).json({ message: 'Post not found' });
@@ -29,7 +29,7 @@ const getOnePost = async (req, res) => {
 
 const getAllPosts = async (req, res) => {
   try {
-    const posts = await Post.findAll();
+    const posts = await Post.find().populate('userId');
 
     return res.status(200).json(posts);
   } catch (err) {
@@ -41,7 +41,7 @@ const getAllPosts = async (req, res) => {
 const getAllUserPosts = async (req, res) => {
   const { id } = req.params;
   try {
-    const posts = await Post.find({ userId: id });
+    const posts = await Post.find({ userId: id }).populate('userId');
 
     res.status(200).json(posts);
   } catch (err) {

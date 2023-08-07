@@ -89,4 +89,24 @@ const me = async (req, res) => {
   }
 };
 
-module.exports = { login, signup, me };
+const getUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id).populate('post');
+
+    if (!user) {
+      return res.status(403).json({ message: 'User not found' });
+    }
+
+    const { password, ...otherData } = user._doc;
+
+    res.json({
+      ...otherData,
+    });
+  } catch (err) {
+    console.warn(err);
+    return res.status(500).json({ message: 'Error getting user' });
+  }
+};
+
+module.exports = { login, signup, me, getUser };

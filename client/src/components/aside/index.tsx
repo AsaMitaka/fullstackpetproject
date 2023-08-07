@@ -4,13 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../redux/slices/authSlice';
 
 const Aside = () => {
-  const dispatch = useDispatch();
-  const isAuth = useSelector((state) => state.auth.user);
+  // const dispatch = useDispatch();
+  // const isAuth = useSelector((state) => state.auth.user);
 
-  const handleLogout = () => {
-    window.localStorage.removeItem('token');
-    dispatch(logout());
-  };
+  // const handleLogout = () => {
+  //   window.localStorage.removeItem('token');
+  //   dispatch(logout());
+  // };
 
   return (
     <aside className={styles.aside}>
@@ -24,23 +24,24 @@ const Aside = () => {
         </Link>
       </div>
       <div className={styles.asideBlock}>
-        {isAuth ? (
-          <>
-            <p className={styles.asideBlockHeader}>Profile</p>
-            <Link to="/profile" className={styles.profile}>
-              <div className={styles.profileleft}>
-                <img src="" alt="" className={styles.profileimg} />
-              </div>
-              <div className={styles.profileright}>
-                <p>Username</p>
-                <p>Email</p>
-              </div>
-            </Link>
-            <div className={styles.logout} onClick={handleLogout}>
-              Logout
+        {/* {isAuth ? ( */}
+        <>
+          <p className={styles.asideBlockHeader}>Profile</p>
+          <Link to="/profile" className={styles.profile}>
+            <div className={styles.profileleft}>
+              <img src="" alt="" className={styles.profileimg} />
             </div>
-          </>
-        ) : (
+            <div className={styles.profileright}>
+              <p>Username</p>
+              <p>Email</p>
+            </div>
+          </Link>
+          {/* <div className={styles.logout} onClick={handleLogout}>
+              Logout
+            </div> */}
+        </>
+
+        {/*) : (
           <>
             <Link to="/login" className={styles.login}>
               Login
@@ -49,7 +50,7 @@ const Aside = () => {
               Signup
             </Link>
           </>
-        )}
+        )} */}
       </div>
     </aside>
   );

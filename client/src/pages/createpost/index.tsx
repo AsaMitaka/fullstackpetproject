@@ -1,14 +1,6 @@
-import { Navigate } from 'react-router-dom';
 import styles from './createpost.module.scss';
-import { useSelector } from 'react-redux';
 
 const Createpost = () => {
-  const isAuth = useSelector((state) => state.auth.user);
-
-  if (!isAuth) {
-    return <Navigate to="/" />;
-  }
-
   return (
     <div className={styles.createpost}>
       <h1>Create Page</h1>

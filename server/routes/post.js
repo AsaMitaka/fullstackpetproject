@@ -11,9 +11,9 @@ const {
 } = require('../controllers/post');
 const checkAuth = require('../middleware/checkAuth');
 
-router.get('/:id', getOnePost);
 router.get('/all', getAllPosts);
 router.get('/all/:id', getAllUserPosts);
+router.get('/:id', getOnePost);
 
 router.post('/create', checkAuth, createPost);
 router.patch('/:id', checkAuth, updatePost);
