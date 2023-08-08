@@ -17,9 +17,14 @@ const Post = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const { data } = await axios.get(`/post/${id}`);
-      console.log(data);
-      setData(data);
+      try {
+        const { data } = await axios.get(`/post/${id}`);
+
+        setData(data);
+      } catch (err) {
+        console.warn(err);
+        alert(`Error: ${err}`);
+      }
     };
     getData();
   }, []);

@@ -1,8 +1,18 @@
 import { Route, Routes } from 'react-router-dom';
 import { Createpost, Login, Main, Post, Profile, Signup } from './pages';
 import Layout from './layout';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { fetchMe, isAuth } from './redux/slices/authSlice';
 
 const App = () => {
+  const dispatch = useDispatch();
+  const isAuthorizated = useSelector(isAuth);
+
+  useEffect(() => {
+    dispatch(fetchMe());
+  }, []);
+
   return (
     <>
       <Routes>

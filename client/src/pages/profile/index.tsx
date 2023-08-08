@@ -17,15 +17,18 @@ const Profile = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const { data } = await axios.get(`/user/${id}`);
+      try {
+        const { data } = await axios.get(`/user/${id}`);
 
-      setData(data);
+        setData(data);
+      } catch (err) {
+        console.warn(err);
+        alert(`Error: ${err}`);
+      }
     };
 
     getData();
   }, []);
-
-  console.log(data);
 
   return (
     <div className={styles.profile}>

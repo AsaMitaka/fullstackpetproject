@@ -1,8 +1,11 @@
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import styles from './index.module.scss';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchLogin, isAuth } from '../../redux/slices/authSlice';
 
 const Login = () => {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -18,13 +21,30 @@ const Login = () => {
     setPassword(password);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!email || !password) {
       return;
     }
+
+    const data = await dispatch(fetchLogin({ email, password }));
+
+    if (!data.payload) {
+      alert('Failed to login');
+      console.warn('Failed to login');
+    }
+
+    if (data.payload.token) {
+      window.localStorage.setItem('token', data.payload.token);
+    }
   };
+
+  const isAuthorizated = useSelector(isAuth);
+
+  if (isAuthorizated) {
+    return <Navigate to={'/'} />;
+  }
 
   return (
     <div className={styles.wrapper}>
