@@ -3,9 +3,11 @@ import Post from '../../components/post';
 import styles from './main.module.scss';
 import { useEffect } from 'react';
 import { fetchPosts } from '../../redux/slices/postsSlice';
+import { isAuth } from '../../redux/slices/authSlice';
 
 const Main = () => {
   const dispatch = useDispatch();
+  const isAuthenticated = useSelector(isAuth);
   const { posts, status } = useSelector((state) => state.posts);
   const isLoading = status === 'loading';
   const isError = status === 'rejected';
@@ -34,6 +36,7 @@ const Main = () => {
               username={post.userId.username}
               userId={post.userId._id}
               viewsCount={post.views}
+              isOwner={isAuthenticated?._id === post.userId._id}
             />
           ))
         )}

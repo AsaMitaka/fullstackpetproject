@@ -7,6 +7,7 @@ const Aside = () => {
   const dispatch = useDispatch();
   const isAuthorizated = useSelector(isAuth);
   const userId = isAuthorizated ? isAuthorizated._id : null;
+  const username = isAuthorizated ? isAuthorizated.username : null;
 
   const handleLogout = () => {
     window.localStorage.removeItem('token');
@@ -20,9 +21,11 @@ const Aside = () => {
         <Link to="/" className={styles.link}>
           Main
         </Link>
-        <Link to="/createpost" className={styles.link}>
-          Create Post
-        </Link>
+        {isAuthorizated && (
+          <Link to="/createpost" className={styles.link}>
+            Create Post
+          </Link>
+        )}
       </div>
       <div className={styles.asideBlock}>
         {isAuthorizated ? (
@@ -33,8 +36,7 @@ const Aside = () => {
                 <img src="" alt="" className={styles.profileimg} />
               </div>
               <div className={styles.profileright}>
-                <p>Username</p>
-                <p>Email</p>
+                <p>{username}</p>
               </div>
             </Link>
 

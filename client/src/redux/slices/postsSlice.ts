@@ -8,6 +8,10 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
   return data;
 });
 
+export const fetchDeletePost = createAsyncThunk('posts/fetchDeletePost', async (id) => {
+  await axios.delete(`/post/${id}`);
+});
+
 const initialState = {
   posts: [],
   status: 'loading',
@@ -18,6 +22,10 @@ const postsSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(fetchDeletePost.pending, (state, action) => {
+      state.posts = state.posts.filter((obj) => obj._id !== action.meta.arg);
+    });
+
     builder.addCase(fetchPosts.pending, (state, action) => {
       state.posts = [];
       state.status = 'loading';
@@ -33,5 +41,5 @@ const postsSlice = createSlice({
   },
 });
 
-export const {} = postsSlice.actions;
+// export const {} = postsSlice.actions;
 export default postsSlice.reducer;
