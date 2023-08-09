@@ -1,12 +1,15 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './post.module.scss';
 import { useDispatch } from 'react-redux';
 import { fetchDeletePost } from '../../redux/slices/postsSlice';
 
 const Post = ({ id, title, username, userId, viewsCount, text, isOwner }) => {
   const dispatch = useDispatch();
+  const history = useNavigate();
 
-  const onHandleEdit = () => {};
+  const onHandleEdit = () => {
+    history(`/post/${id}/edit`);
+  };
 
   const onHandleDelete = () => {
     dispatch(fetchDeletePost(id));
@@ -21,7 +24,9 @@ const Post = ({ id, title, username, userId, viewsCount, text, isOwner }) => {
         </Link>
         {isOwner && (
           <div>
-            <button className={styles.postBtn}>edit</button>
+            <button className={styles.postBtn} onClick={onHandleEdit}>
+              edit
+            </button>
             <button className={styles.postBtn} onClick={onHandleDelete}>
               X
             </button>
