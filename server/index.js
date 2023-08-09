@@ -6,6 +6,7 @@ require('dotenv').config();
 
 const userRouter = require('./routes/user');
 const postRouter = require('./routes/post');
+const commentRouter = require('./routes/comment');
 
 const connect = () => {
   mongoose
@@ -21,6 +22,7 @@ app.use(express.json());
 
 app.use('/api/user/', userRouter);
 app.use('/api/post/', postRouter);
+app.use('/api/comment/', commentRouter);
 
 app.listen(process.env.PORT, () => {
   connect();

@@ -18,6 +18,12 @@ const PostSchema = Schema(
       type: Number,
       default: 0,
     },
+    comments: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Comment',
+      },
+    ],
   },
   {
     timestamps: true,
