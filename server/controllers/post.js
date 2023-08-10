@@ -14,7 +14,9 @@ const getOnePost = async (req, res) => {
       {
         returnDocument: 'after',
       },
-    ).populate('userId');
+    )
+      .populate('userId')
+      .populate({ path: 'comments', populate: { path: 'userId', model: 'User' } });
 
     if (!post) {
       return res.status(404).json({ message: 'Post not found' });
@@ -22,8 +24,8 @@ const getOnePost = async (req, res) => {
 
     return res.status(200).json(post);
   } catch (err) {
-    console.warn(err);
-    return res.status(404).json({ message: 'Error getting post' });
+    console.error(err);
+    return res.status(500).json({ message: 'Error getting post' });
   }
 };
 

@@ -3,6 +3,8 @@ import Post from '../../components/post';
 import styles from './profile.module.scss';
 import { useEffect, useState } from 'react';
 import axios from '../../middleware/axios';
+import { useSelector } from 'react-redux';
+import { isAuth } from '../../redux/slices/authSlice';
 
 const Profile = () => {
   const { id } = useParams();
@@ -14,6 +16,8 @@ const Profile = () => {
     _id: '',
     post: [],
   });
+  const isAuthorized = useSelector(isAuth);
+  const owner = isAuthorized._id === data._id;
 
   useEffect(() => {
     const getData = async () => {
@@ -50,6 +54,7 @@ const Profile = () => {
               username={post.userId?.username}
               userId={post.userId?._id}
               viewsCount={post.views}
+              isOwner={owner}
             />
           ))}
       </div>

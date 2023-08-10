@@ -1,11 +1,11 @@
-import { Link, useNavigate, useParams } from 'react-router-dom';
 import styles from './post.module.scss';
 import { useEffect, useState } from 'react';
-import axios from '../../middleware/axios';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { fetchDeletePost } from '../../redux/slices/postsSlice';
 import { isAuth } from '../../redux/slices/authSlice';
 import Comment from '../../components/comment';
+import axios from '../../middleware/axios';
 
 const Post = () => {
   const { id } = useParams();
@@ -16,6 +16,7 @@ const Post = () => {
     text: '',
     title: '',
     userId: [],
+    comments: [],
     views: 0,
     _id: '',
     createdAt: '',
@@ -57,16 +58,29 @@ const Post = () => {
     setComment(value);
   };
 
-  const onHandleSubmit = (e) => {
+  const onHandleSubmit = async (e) => {
     e.preventDefault();
 
     if (comment.length < 1 || comment.length > 200) {
-      console.warn('Comment must be more than 1 or less 200 characters');
+      console.warn('Comment must be more than 1 or less than 200 characters');
       return;
     }
 
-    console.log('Submit', comment);
+    try {
+      const res = await axios.post('/comment/create', { postId: id, text: comment });
+
+      if (!res) {
+        console.warn('Comment is not published');
+      } else {
+        setComment('');
+        console.log('Comment posted');
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
   };
+
+  console.log(data.comments, data);
 
   return (
     <div className={styles.post}>
@@ -96,6 +110,7 @@ const Post = () => {
           <form onSubmit={onHandleSubmit} className={styles.postComment}>
             <textarea
               className={styles.postCommentInput}
+              placeholder="Write comment"
               value={comment}
               onChange={onHandleComment}
             />
@@ -103,9 +118,18 @@ const Post = () => {
           </form>
         )}
         <div className={styles.postBlockComments}>
-          {[...new Array(6)].map((_, index) => (
-            <Comment key={index} />
-          ))}
+          {data.comments.length > 0 ? (
+            data.comments.map((item) => (
+              <Comment
+                item={item}
+                key={item._id}
+                isOwner={item?.userId._id === isAuthorizated?._id}
+                postId={id}
+              />
+            ))
+          ) : (
+            <p>No comments</p>
+          )}
         </div>
       </div>
     </div>

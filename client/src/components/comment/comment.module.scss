@@ -25,7 +25,28 @@
     }
   }
 
+  &Row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
   &BlockText {
     padding: 5px 0;
+  }
+
+  &Btns {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &Btn {
+    margin-left: 5px;
+    padding: 2px 5px;
+    font-size: 18px;
+    color: white;
+    border-radius: 5px;
+    background-color: black;
+    cursor: pointer;
   }
 }
