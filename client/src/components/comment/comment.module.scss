@@ -1,0 +1,31 @@
+.comment {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 20px;
+
+  &Header {
+    display: flex;
+    align-items: center;
+    color: black;
+    text-decoration: none;
+
+    &Img {
+      margin-right: 10px;
+      width: 25px;
+      height: 25px;
+      border: 1px solid black;
+    }
+
+    &Nickname {
+      font-size: 20px;
+
+      &:hover {
+        color: blue;
+      }
+    }
+  }
+
+  &BlockText {
+    padding: 5px 0;
+  }
+}

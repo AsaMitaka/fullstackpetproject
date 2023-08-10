@@ -5,6 +5,7 @@ import axios from '../../middleware/axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDeletePost } from '../../redux/slices/postsSlice';
 import { isAuth } from '../../redux/slices/authSlice';
+import Comment from '../../components/comment';
 
 const Post = () => {
   const { id } = useParams();
@@ -20,6 +21,7 @@ const Post = () => {
     createdAt: '',
     updatedAt: '',
   });
+  const [comment, setComment] = useState('');
   const isOwnPost = isAuthorizated?._id === data.userId?._id;
 
   useEffect(() => {
@@ -43,6 +45,27 @@ const Post = () => {
   const onHandleDelete = () => {
     dispatch(fetchDeletePost(id));
     navigate(`/`);
+  };
+
+  const onHandleComment = (e) => {
+    const value = e.target.value;
+
+    if (value.length > 200) {
+      return;
+    }
+
+    setComment(value);
+  };
+
+  const onHandleSubmit = (e) => {
+    e.preventDefault();
+
+    if (comment.length < 1 || comment.length > 200) {
+      console.warn('Comment must be more than 1 or less 200 characters');
+      return;
+    }
+
+    console.log('Submit', comment);
   };
 
   return (
@@ -69,6 +92,21 @@ const Post = () => {
         )}
 
         <div className={styles.postBlockText}>{data.text}</div>
+        {isAuthorizated && (
+          <form onSubmit={onHandleSubmit} className={styles.postComment}>
+            <textarea
+              className={styles.postCommentInput}
+              value={comment}
+              onChange={onHandleComment}
+            />
+            <input type="submit" className={styles.postCommentBtn} />
+          </form>
+        )}
+        <div className={styles.postBlockComments}>
+          {[...new Array(6)].map((_, index) => (
+            <Comment key={index} />
+          ))}
+        </div>
       </div>
     </div>
   );
